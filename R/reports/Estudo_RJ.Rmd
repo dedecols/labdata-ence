@@ -1,0 +1,98 @@
+---
+title: "LABData - Dados da PNS 2019"
+author: "André Lessa Silva"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r, echo=FALSE, include=FALSE}
+library(PNSIBGE)
+library(dplyr)
+library(knitr)
+library(gt)
+
+savedir <- "C:/Users/a_les/Documents/ENCE/2025.1/LABDATA/"
+dados <- readRDS(file = paste0(savedir,'pns_2019.rds'))
+dados_pns <- dados$variables
+dados_rj <- dados_pns %>% filter(V0001 == "Rio de Janeiro")
+```
+
+
+A ideia deste trabalho é apresentar informações da Pesquisa Nacional de Saúde de 2019 sobre infartos, acidente vascular cerebral, hipertensão arterial e diabetes da população do Estado do Rio de Janeiro. Obtive essas informações no questionário sobre doenças crônicas (Módulo Q).Usarei agregações para o Estado do Rio de Janeiro já disponibilizadas nos dados da PNS. 
+
+A variável V0026 apresenta as informações por situação censitária, ou seja, se o respondente é da área urbana ou rural. Assim, farei uma comparação sobre a ocorrência dos problemas de saúde nas áreas urbana e rural do RJ. 
+
+A variável V0031 apresenta as informações por tipos de áreas: a) Capital; b) Resto da RM (Região Metropolitana, excluindo a Capital), c) RIDE (excluindo a Capital); e, d) Resto da UF (Unidade da Federação, excluindo a Região Metropolitana e RIDE). Desse jeito, é possível apresentar a situação desses problemas de saúde de forma comparativa entre cada uma dessas áreas. 
+
+
+```{r, echo=FALSE}
+# contagem <- dados_rj %>%
+#   rename(estrato_geografico = V0031) %>% 
+#   group_by(estrato_geografico) %>%
+#   summarize(n = n())
+# 
+# gt(contagem) %>% 
+#   cols_label(estrato_geografico = 'Estrato Geográfico',
+#              n = 'Respostas') %>% 
+#   tab_style(style = cell_text(align = "left"),
+#             locations = cells_column_labels(columns = c('estrato_geografico', 'n'))) %>% 
+#   tab_style(style = cell_text(align = 'left'),  
+#             locations = cells_body(columns = 'estrato_geografico')) %>% 
+#   tab_style(style = cell_text(align = 'center'),
+#             locations = cells_body(columns = 'n')) %>% 
+#   tab_options(table.width = pct(60))
+
+# # Adicionar o total usando o recurso do pacote gt depois
+# contagem <- dados_rj %>%
+#   count(V0031, .drop = FALSE) %>% 
+#   rename(estrato_geografico = V0031, respostas = n) %>% 
+#   arrange(desc(respostas)) %>%
+#   bind_rows(tibble(estrato_geografico = "Total", 
+#                    respostas = sum(.$respostas)))
+# 
+# gt(contagem)
+
+situacao_censitaria <- dados_rj %>%
+  count(V0026, .drop = FALSE) %>% 
+  rename(situacao_censitaria = V0026, respostas = n) %>% 
+  arrange(desc(respostas)) %>%
+  bind_rows(tibble(situacao_censitaria = "Total", 
+                   respostas = sum(.$respostas))) 
+
+gt(situacao_censitaria) %>% 
+  cols_label(situacao_censitaria = 'Situação Censitária',
+             respostas = 'Respostas')
+
+
+areas <- dados_rj %>%
+  count(V0031, .drop = FALSE) %>% 
+  rename(estrato_geografico = V0031, respostas = n) %>% 
+  arrange(desc(respostas)) %>%
+  bind_rows(tibble(estrato_geografico = "Total", 
+                   respostas = sum(.$respostas))) 
+
+gt(areas) %>% 
+  cols_label(estrato_geografico = 'Estrato Geográfico',
+             respostas = 'Respostas')
+```
+
+
+Fazer o cálculo das estatísticas (ver a questão dos pesos amostrais) e expor o resultado de alguma forma: tabela, mapa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
