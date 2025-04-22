@@ -1,0 +1,21 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+O dado obtido com a função get_pns do pacote PNSIBGE é do tipo survey.design2 e survey.design.
+
+Limitações no uso de arquivos desse tipo: dplyr, ggplot2
+
+Modo de usar: R base
+Alternativa: srvyr
+
+```{r}
+library(survey)
+help(package = "survey")
+?survey::survey.design
+?survey::survey.design2
+browseVignettes("survey")
+
+```
+
