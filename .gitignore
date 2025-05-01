@@ -1,0 +1,17 @@
+# Ignorar bases de dados grandes
+data/
+*.csv
+*.sav
+
+# Ignorar arquivos temporários do R
+.Rhistory
+.RData
+.Rproj.user/
+
+# Ignorar configurações do VS Code e outros editores
+.vscode/
+.idea/
+
+# Ignorar arquivos de sistema
+.DS_Store
+Thumbs.db
